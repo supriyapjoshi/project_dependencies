@@ -27,7 +27,7 @@ defmodule ProjectDependencies.Mixfile do
 
   def applications(_) do
     [
-      :phoenix, :phoenix_html, :cowboy, :logger, :gettext
+      :phoenix, :phoenix_html, :cowboy, :logger, :gettext, :neo4j_sips
     ]
   end
 
@@ -40,13 +40,14 @@ defmodule ProjectDependencies.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.1.4"},
-      {:phoenix_html, "~> 2.4"},
+
+      {:phoenix, "~> 1.1.0"},
+      {:phoenix_html, "~> 2.1"},
       {:phoenix_live_reload, "~> 1.0", only: :dev},
+      {:neo4j_sips, "~> 0.1"},
       {:gettext, "~> 0.9"},
       {:cowboy, "~> 1.0"},
-      {:hound, "~> 0.8", only: :test},
-      {:tentacat, "~> 0.2"}
+      {:hound, "~> 0.6", only: :test},
     ]
   end
 end

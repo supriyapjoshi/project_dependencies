@@ -10,23 +10,23 @@ defmodule JavaProjectDependenciesTest do
   test "it matches the regex for import when its present" do
     expected = ["import com.test.bla.bla"]
     input = ["import com.test.bla.bla"]
-    assert JavaProjectDependencies.filterImports(input) == expected
+    assert elem(JavaProjectDependencies.filterImports(input), 1) == expected
   end
 
   test "it matches multiple import statements when present" do
     expected = ["bla.bla.3", "bla.bla.2;", "bla.bla.1;"]
     input = ["import bla.bla.1;","import bla.bla.2;", "import bla.bla.3"]
-    assert JavaProjectDependencies.filterImports(input) == expected
+    assert elem(JavaProjectDependencies.filterImports(input),1) == expected
   end
 
   test "it ignores the statements that dont match" do
-    expected = ["bla.bla.2", "bla.bla.1"]
+    expected = {:ok, ["bla.bla.2", "bla.bla.1"]}
     input = ["package bla;", "import bla.bla.1", "import bla.bla.2"]
     assert JavaProjectDependencies.filterImports(input) == expected
   end
 
   test "it creates the list of only imported packages, ignoring the word import" do
-    expected = ["bla.bla.1", "bla.bla.2"]
+    expected = {:ok, ["bla.bla.1", "bla.bla.2"]}
     input = ["import bla.bla.2", "import bla.bla.1"]
     assert JavaProjectDependencies.filterImports(input) == expected
   end
@@ -35,5 +35,10 @@ defmodule JavaProjectDependenciesTest do
     input = nil
     expected = {:error, "Empty string received"}
     assert JavaProjectDependencies.splitData(input) == expected 
+  end
+
+  test "it gives an error in process if there is an error reading the file or reading data" do
+    expected = {:error, :enoent}
+    assert JavaProjectDependencies.process("file_name") == expected
   end
 end

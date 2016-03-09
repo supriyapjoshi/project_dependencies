@@ -7,7 +7,7 @@ defmodule JavaProjectDependencies do
   end
 
   def filterImports([head | tail]) do
-    _findImports([head | tail],[])
+    {:ok, _findImports([head | tail],[])}
   end
 
 
@@ -20,7 +20,7 @@ defmodule JavaProjectDependencies do
   defp _findImports([] ,imports), do: Enum.filter_map(imports, filterNil, replaceImport)
 
   def readFile(file_name) do
-    {:ok, result} = File.read(file_name)
+    File.read(file_name)
   end 
 
   def splitData(file_data) do
@@ -32,10 +32,9 @@ defmodule JavaProjectDependencies do
 
   def process(file) do
     import Helpers
-    readFile(file) 
+    readFile(file)
     >>> splitData()
-    |> filterImports() 
-    |> IO.inspect
+    >>> filterImports()
   end
 
   def filterNil do
